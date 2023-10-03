@@ -4,22 +4,39 @@ import Home from "./screens/Home";
 import Nav from "./components/navigation/Nav";
 import Header from "./components/header/Header";
 import Appointments from "./components/main/Appointments";
+import Login from "./screens/Login";
+import SignUp from "./screens/SignUp";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Header />
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Appointments" component={Appointments} />
-      </Stack.Navigator>
-      <Nav />
+      {true ? (
+        <>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+          </Stack.Navigator>
+        </>
+      ) : (
+        <>
+          <Header />
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Appointments" component={Appointments} />
+          </Stack.Navigator>
+          <Nav />
+        </>
+      )}
     </NavigationContainer>
   );
 }

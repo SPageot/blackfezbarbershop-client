@@ -5,12 +5,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/core";
 
 const Container = styled(SafeAreaView)`
-  position: absolute;
   flex-direction: row;
-  bottom: 0;
-  border: 1px solid black;
-  height: 90px;
-  width: 100%;
+  flex: 0.13;
   background-color: #404040;
   justify-content: space-evenly;
   align-items: center;

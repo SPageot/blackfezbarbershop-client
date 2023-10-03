@@ -12,17 +12,10 @@ import SelectDropdown from "react-native-select-dropdown";
 
 const Container = styled(SafeAreaView)`
   flex: 1;
+  background-color: #c0c0c0;
 `;
 
-const ScrollContainer = styled(ScrollView)`
-  background-color: #c0c0c0;
-  ${(props) =>
-    !props.isConfirmShown
-      ? css`
-          padding-top: 30px;
-        `
-      : null};
-`;
+const ScrollContainer = styled(ScrollView)``;
 
 const ButtonContainer = styled(Pressable)`
   width: 100%;
@@ -43,6 +36,7 @@ const TextInputStyle = styled(TextInput)`
 `;
 
 const DateTimeText = styled(Text)`
+  margin-top: 20px;
   font-size: 20px;
 `;
 
@@ -97,10 +91,11 @@ const Appointments = () => {
   return (
     <Container>
       <ScrollContainer
-        contentContainerStyle={{ alignItems: "center", gap: "15px" }}
-        isConfirmShown={
-          paymentType && fullName && selectedDate && cutType && phoneNumber
-        }
+        contentContainerStyle={{
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "5px",
+        }}
       >
         {paymentType && fullName && selectedDate && cutType && phoneNumber && (
           <ButtonContainer onPress={onClickConfirm}>
