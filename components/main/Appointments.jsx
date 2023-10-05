@@ -5,10 +5,12 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import SelectDropdown from "react-native-select-dropdown";
+import { UserStateContext } from "../../util/getUser";
+import { useNavigation } from "@react-navigation/core";
 
 const Container = styled(SafeAreaView)`
   flex: 1;
@@ -41,11 +43,16 @@ const DateTimeText = styled(Text)`
 `;
 
 const Appointments = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [fullName, setFullName] = useState("");
-  const [paymentType, setPaymentType] = useState();
-  const [cutType, setCutType] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
+  const { user } = useContext(UserStateContext);
+  const navigation = useNavigation();
+  const [appointment, setAppointment] = useState({
+    date: new Date(),
+    first_name: user.user.first_name,
+    last_name: user.user.last_name,
+    payment_type: "",
+    type_of_haircut: "",
+    client_id: user.user.id,
+  });
 
   const paymentOptions = ["Credit", "Cash"];
   const cutOptions = [
@@ -59,34 +66,21 @@ const Appointments = () => {
   ];
 
   const onChangeDate = (e, selectedDate) => {
-    setSelectedDate(selectedDate);
-  };
-
-  const onTextChange = (e) => {
-    setFullName(e);
-  };
-
-  const onPhoneChange = (e) => {
-    setPhoneNumber(e);
+    setAppointment({ ...appointment, date: selectedDate });
   };
 
   const onClickConfirm = async () => {
-    return await fetch("http://127.0.0.1:8000/appointments/", {
+    await fetch("http://127.0.0.1:8000/appointments/", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        payment_type: paymentType.item,
-        name: fullName,
-        date: selectedDate,
-        type_of_haircut: cutType.item,
-        phone_number: phoneNumber,
-      }),
-    }).then((request) => console.log(request.json()));
+      body: JSON.stringify(appointment),
+    })
+      .then((request) => request.json())
+      .then((data) => (data ? navigation.navigate("Home") : null));
   };
-  console.log(selectedDate);
 
   return (
     <Container>
@@ -97,24 +91,22 @@ const Appointments = () => {
           gap: "5px",
         }}
       >
-        {paymentType && fullName && selectedDate && cutType && phoneNumber && (
+        {Object.values(appointment) && (
           <ButtonContainer onPress={onClickConfirm}>
             <ButtonText>Confirm</ButtonText>
           </ButtonContainer>
         )}
-        <DateTimeText>Full Name</DateTimeText>
-        <TextInputStyle value={fullName} onChangeText={onTextChange} />
-        <DateTimeText>Phone Number</DateTimeText>
-        <TextInputStyle
-          value={phoneNumber}
-          keyboardType="number-pad"
-          onChangeText={onPhoneChange}
-        />
+        <DateTimeText>First Name</DateTimeText>
+        <Text>{appointment.first_name} </Text>
+        <DateTimeText>Last Name</DateTimeText>
+        <Text>{appointment.last_name}</Text>
+        <DateTimeText>Client ID</DateTimeText>
+        <Text>{appointment.client_id}</Text>
         <DateTimeText>Select Haircut</DateTimeText>
         <SelectDropdown
           data={cutOptions}
           onSelect={(selectedItem, index) => {
-            setCutType({ id: index, item: selectedItem });
+            setAppointment({ ...appointment, type_of_haircut: selectedItem });
           }}
           buttonTextAfterSelection={(selectedItem, index) => {
             return selectedItem;
@@ -125,14 +117,13 @@ const Appointments = () => {
         />
         <DateTimeText>Select a Date</DateTimeText>
         <DateTimePicker
-          value={selectedDate}
+          value={appointment.date}
           mode="date"
-          is24Hour
           onChange={onChangeDate}
         />
         <DateTimeText>Select a Time</DateTimeText>
         <DateTimePicker
-          value={selectedDate}
+          value={appointment.date}
           mode="time"
           is24Hour
           onChange={onChangeDate}
@@ -141,7 +132,7 @@ const Appointments = () => {
         <SelectDropdown
           data={paymentOptions}
           onSelect={(selectedItem, index) => {
-            setPaymentType({ id: index, item: selectedItem });
+            setAppointment({ ...appointment, payment_type: selectedItem });
           }}
           buttonTextAfterSelection={(selectedItem, index) => {
             return selectedItem;
