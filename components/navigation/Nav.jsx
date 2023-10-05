@@ -1,8 +1,9 @@
 import { SafeAreaView, Text } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/core";
+import { UserStateContext } from "../../util/getUser";
 
 const Container = styled(SafeAreaView)`
   flex-direction: row;
@@ -14,6 +15,7 @@ const Container = styled(SafeAreaView)`
 
 const Nav = () => {
   const navigation = useNavigation();
+  const { logout } = useContext(UserStateContext);
   return (
     <Container>
       <Icon
@@ -27,6 +29,12 @@ const Nav = () => {
         size={35}
         color="#fff"
         onPress={() => navigation.navigate("Appointments")}
+      />
+      <Icon
+        name="power-off"
+        size={35}
+        color="#fff"
+        onPress={() => logout("Login")}
       />
     </Container>
   );
