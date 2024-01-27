@@ -7,6 +7,7 @@ import { Video, ResizeMode } from "expo-av";
 import loginVideo from "./../assets/blackfez_vid_1_trimmed.mp4";
 import { ForgotPassword } from "../components/login/ForgotPassword";
 import { useUser } from "../utils/GetUser";
+import { useNavigation } from "@react-navigation/native";
 
 const loginContainer = StyleSheet.create({
   container: {
@@ -26,6 +27,7 @@ const loginContainer = StyleSheet.create({
 });
 
 const Login = () => {
+  const navigation = useNavigation();
   const { verifyUser } = useUser();
   const [register, setRegister] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
@@ -48,7 +50,9 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        verifyUser(data);
+        if (verifyUser(data)) {
+          navigation.navigate("Home");
+        }
       });
     setUserDetails({
       firstName: "",
@@ -98,7 +102,16 @@ const Login = () => {
           register={register}
           forgotPassword={forgotPassword}
           onLoginPress={loginUser}
-          onSignUpPress={() => setRegister(true)}
+          onSignUpPress={() => {
+            setRegister(true);
+            setUserDetails({
+              firstName: "",
+              lastName: "",
+              email: "",
+              username: "",
+              password: "",
+            });
+          }}
           onCancelPress={() => setRegister(false)}
           onBackPress={() => setForgotPassword(false)}
         />
