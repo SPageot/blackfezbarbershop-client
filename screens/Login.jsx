@@ -51,7 +51,7 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
         if (verifyUser(data)) {
-          navigation.navigate("Home");
+          navigation.navigate("Appointment");
         }
       });
     setUserDetails({
