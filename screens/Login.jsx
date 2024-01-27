@@ -1,11 +1,12 @@
 import { SafeAreaView, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Container from "../components/login/Container";
 import { UserInput } from "../components/login/UserInput";
 import { Options } from "../components/login/Options";
 import { Video, ResizeMode } from "expo-av";
 import loginVideo from "./../assets/blackfez_vid_1_trimmed.mp4";
 import { ForgotPassword } from "../components/login/ForgotPassword";
+import { useUser } from "../utils/GetUser";
 
 const loginContainer = StyleSheet.create({
   container: {
@@ -19,12 +20,45 @@ const loginContainer = StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     height: "100%",
+    bottom: 0,
+    left: 0,
   },
 });
 
 const Login = () => {
+  const { verifyUser } = useUser();
   const [register, setRegister] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
+  const [userDetails, setUserDetails] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    password: "",
+  });
+
+  const loginUser = async () => {
+    await fetch("http://localhost:3001/user", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userDetails),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        verifyUser(data);
+      });
+    setUserDetails({
+      firstName: "",
+      lastName: "",
+      email: "",
+      username: "",
+      password: "",
+    });
+  };
+
   return (
     <SafeAreaView style={loginContainer.container}>
       <Video
@@ -36,10 +70,34 @@ const Login = () => {
         isLooping
       />
       <Container>
-        <UserInput forgotPassword={forgotPassword} register={register} />
+        <UserInput
+          onChangeFirstName={(value) =>
+            setUserDetails({ ...userDetails, firstName: value })
+          }
+          onChangeLastName={(value) =>
+            setUserDetails({ ...userDetails, lastName: value })
+          }
+          onChangeEmail={(value) =>
+            setUserDetails({ ...userDetails, email: value })
+          }
+          onChangeUserName={(value) =>
+            setUserDetails({ ...userDetails, username: value })
+          }
+          onChangePassword={(value) =>
+            setUserDetails({ ...userDetails, password: value })
+          }
+          firstName={userDetails.firstName}
+          lastName={userDetails.lastName}
+          email={userDetails.email}
+          username={userDetails.username}
+          password={userDetails.password}
+          forgotPassword={forgotPassword}
+          register={register}
+        />
         <Options
           register={register}
           forgotPassword={forgotPassword}
+          onLoginPress={loginUser}
           onSignUpPress={() => setRegister(true)}
           onCancelPress={() => setRegister(false)}
           onBackPress={() => setForgotPassword(false)}
