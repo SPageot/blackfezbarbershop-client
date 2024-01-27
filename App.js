@@ -1,10 +1,13 @@
 import { PaperProvider } from "react-native-paper";
 import Login from "./screens/Login";
+import UserProvider from "./utils/GetUser";
 
 export default function App() {
   return (
-    <PaperProvider>
-      <Login />
-    </PaperProvider>
+    <UserProvider>
+      <PaperProvider>
+        <Login />
+      </PaperProvider>
+    </UserProvider>
   );
 }

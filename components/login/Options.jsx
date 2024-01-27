@@ -15,7 +15,6 @@ const Options = ({
     <Card.Actions>
       <Button onPress={onCancelPress}>{optionText.cancel}</Button>
       <Button onPress={onLoginPress}>{optionText.login}</Button>
-      <Button onPress={onSignUpPress}>{optionText.signUp}</Button>
     </Card.Actions>
   ) : forgotPassword ? (
     <Card.Actions>
