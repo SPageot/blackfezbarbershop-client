@@ -8,13 +8,20 @@ const Options = ({
   onSignUpPress,
   onCancelPress,
   onSubmitPress,
+  onRegisterPress,
   onBackPress,
   forgotPassword,
+  onNextPress,
+  pageNumber,
 }) => {
   return register ? (
     <Card.Actions>
       <Button onPress={onCancelPress}>{optionText.cancel}</Button>
-      <Button onPress={onLoginPress}>{optionText.login}</Button>
+      {pageNumber === 4 ? (
+        <Button onPress={onRegisterPress}>{optionText.signUp}</Button>
+      ) : (
+        <Button onPress={onNextPress}>{optionText.next}</Button>
+      )}
     </Card.Actions>
   ) : forgotPassword ? (
     <Card.Actions>

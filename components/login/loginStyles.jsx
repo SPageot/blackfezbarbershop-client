@@ -5,6 +5,12 @@ const cardStyles = StyleSheet.create({
     width: "90%",
     height: "70%",
   },
+
+  signUpContainer: {
+    position: "relative",
+    width: "100%",
+    height: "100%",
+  },
   container: {
     justifyContent: "space-evenly",
     alignItems: "center",

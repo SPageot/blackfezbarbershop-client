@@ -4,6 +4,7 @@ const optionText = {
   cancel: "Cancel",
   submit: "Submit",
   back: "Back",
+  next: "Next",
 };
 
 const loginText = {
@@ -20,4 +21,10 @@ const signUptext = {
   email: "E-mail",
 };
 
-export { optionText, loginText, signUptext };
+const signUpStatus = {
+  success: "Successfully signed up! Please Log In!",
+  alreadyRegistered: "You already registered! Please log in!",
+  passwordError: "Password Invalid",
+};
+
+export { optionText, loginText, signUptext, signUpStatus };

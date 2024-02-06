@@ -1,11 +1,7 @@
-import { Card } from "react-native-paper";
+import { Card, Text } from "react-native-paper";
 
-const Container = () => {
-  return (
-    <Card>
-      <Text>Container</Text>
-    </Card>
-  );
+const Container = ({ children }) => {
+  return <Card style={{ padding: 15, width: "70%" }}>{children}</Card>;
 };
 
 export default Container;
