@@ -12,7 +12,7 @@ const Home = () => {
       <Text>Upcoming Appointments</Text>
       <View style={{ alignItems: "center" }}>
         <Container>
-          {appointments.length > 0
+          {appointments?.length > 0
             ? appointments.map((appointment) => {
                 return (
                   <Fragment key={appointment.id}>

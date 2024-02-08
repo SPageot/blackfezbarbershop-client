@@ -16,6 +16,8 @@ const UserInput = ({
   lastName,
   onChangeEmail,
   email,
+  onChangePhoneNumber,
+  phoneNumber,
   pageNumber,
 }) => {
   return register ? (
@@ -53,16 +55,22 @@ const UserInput = ({
       ) : null}
       {pageNumber == 3 ? (
         <>
-          <Text variant='bodyMedium'>{signUptext.username}</Text>
+          <Text variant='bodyMedium'>{signUptext.phoneNumber}</Text>
           <TextInput
-            value={username}
-            onChangeText={onChangeUserName}
+            value={phoneNumber}
+            onChangeText={onChangePhoneNumber}
             style={cardStyles.textInput}
           />
         </>
       ) : null}
       {pageNumber == 4 ? (
         <>
+          <Text variant='bodyMedium'>{signUptext.username}</Text>
+          <TextInput
+            value={username}
+            onChangeText={onChangeUserName}
+            style={cardStyles.textInput}
+          />
           <Text variant='bodyMedium'>{signUptext.password}</Text>
           <TextInput
             value={password}

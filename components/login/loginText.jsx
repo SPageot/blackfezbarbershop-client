@@ -16,6 +16,7 @@ const loginText = {
 const signUptext = {
   username: "Username",
   password: "Password",
+  phoneNumber: "Phone Number",
   firstName: "First Name",
   lastName: "Last Name",
   email: "E-mail",
