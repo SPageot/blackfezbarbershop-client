@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Container from "../components/login/Container";
 import { UserInput } from "../components/login/UserInput";
 import { Options } from "../components/login/Options";
@@ -10,6 +10,8 @@ import { useUser } from "../utils/GetUser";
 import { useNavigation } from "@react-navigation/native";
 import { Banner, Text } from "react-native-paper";
 import { signUpStatus } from "../components/login/loginText";
+import { useMutation, useQuery } from "@apollo/client";
+import { REGISTER_USER, SET_USER } from "../api/mutations";
 
 const loginContainer = StyleSheet.create({
   container: {
@@ -28,6 +30,11 @@ const loginContainer = StyleSheet.create({
 
 const Login = () => {
   const navigation = useNavigation();
+  const [user, { data, loading, error }] = useMutation(SET_USER);
+  const [
+    userSignUp,
+    { data: registerData, loading: registerLoading, error: registerError },
+  ] = useMutation(REGISTER_USER);
   const { verifyUser } = useUser();
   const [register, setRegister] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
@@ -35,32 +42,25 @@ const Login = () => {
   const [registerPageNumber, setRegisterPageNumber] = useState(0);
   const [passwordError, setPasswordError] = useState(false);
   const [userDetails, setUserDetails] = useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
+    phone_number: "",
     username: "",
     password: "",
-    retypePassword: "",
   });
-
   const loginUser = async () => {
-    await fetch("http://localhost:3001/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+    user({
+      variables: {
+        username: userDetails.username,
+        password: userDetails.password,
       },
-      body: JSON.stringify(userDetails),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (verifyUser({ ...data, appointments: [] })) {
-          navigation.navigate("Appointment");
-        }
-      });
+    });
+
     setUserDetails({
-      firstName: "",
-      lastName: "",
+      first_name: "",
+      last_name: "",
+      phone_number: "",
       email: "",
       username: "",
       password: "",
@@ -71,40 +71,43 @@ const Login = () => {
     setRegisterPageNumber((prev) => prev + 1);
   };
 
+  useEffect(() => {
+    if (registerData) {
+      setVisible(registerData);
+      setRegister(false);
+    }
+  }, [registerData]);
+
+  useEffect(() => {
+    if (data) {
+      if (verifyUser(data)) {
+        navigation.navigate("Appointment");
+      }
+    }
+  }, [data]);
+
   const signUpUser = () => {
     const passwordValidation = new RegExp(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
     );
 
-    if (passwordValidation.test(userDetails.password)) {
-      fetch("http://localhost:3001/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userDetails),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.signup) {
-            setVisible(data.signup);
-            setRegister(false);
-          }
-        });
+    if (!passwordValidation.test(userDetails.password)) {
+      userSignUp({ variables: userDetails });
+
       setUserDetails({
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         email: "",
         username: "",
+        phone_number: "",
         password: "",
-        retypePassword: "",
       });
       setRegisterPageNumber(0);
     } else {
       setPasswordError(true);
     }
   };
+
   return (
     <SafeAreaView style={loginContainer.container}>
       <Video
@@ -142,13 +145,16 @@ const Login = () => {
       <Container register={register}>
         <UserInput
           onChangeFirstName={(value) =>
-            setUserDetails({ ...userDetails, firstName: value })
+            setUserDetails({ ...userDetails, first_name: value })
           }
           onChangeLastName={(value) =>
-            setUserDetails({ ...userDetails, lastName: value })
+            setUserDetails({ ...userDetails, last_name: value })
           }
           onChangeEmail={(value) =>
             setUserDetails({ ...userDetails, email: value })
+          }
+          onChangePhoneNumber={(value) =>
+            setUserDetails({ ...userDetails, phone_number: value })
           }
           onChangeUserName={(value) =>
             setUserDetails({ ...userDetails, username: value })
@@ -157,8 +163,9 @@ const Login = () => {
             setUserDetails({ ...userDetails, password: value });
           }}
           pageNumber={registerPageNumber}
-          firstName={userDetails.firstName}
-          lastName={userDetails.lastName}
+          phoneNumber={userDetails.phone_number}
+          firstName={userDetails.first_name}
+          lastName={userDetails.last_name}
           email={userDetails.email}
           username={userDetails.username}
           password={userDetails.password}
@@ -175,8 +182,8 @@ const Login = () => {
           onSignUpPress={() => {
             setRegister(true);
             setUserDetails({
-              firstName: "",
-              lastName: "",
+              first_name: "",
+              last_name: "",
               email: "",
               password: "",
             });
