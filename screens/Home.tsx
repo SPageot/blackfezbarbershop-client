@@ -5,7 +5,7 @@ import { useUser } from "../utils/GetUser";
 
 const Home = () => {
   const { user } = useUser();
-  const [appointments, setAppointments] = useState(user.appointments);
+  const [appointments, setAppointments] = useState(user.setUser.appointments);
 
   return (
     <View>
@@ -17,11 +17,11 @@ const Home = () => {
                 return (
                   <Fragment key={appointment.id}>
                     <Text>{appointment.id}</Text>
-                    <Text>{appointment.name}</Text>
-                    <Text>{appointment.email}</Text>
-                    <Text>{appointment.typeOfHaircut}</Text>
-                    <Text>{appointment.date}</Text>
-                    <Text>{appointment.time}</Text>
+                    <Text>{appointment.first_name}</Text>
+                    <Text>{appointment.username}</Text>
+                    <Text>{appointment.type_of_haircut}</Text>
+                    <Text>{appointment.Date}</Text>
+                    <Text>{appointment.Time}</Text>
                   </Fragment>
                 );
               })

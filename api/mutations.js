@@ -9,6 +9,15 @@ export const SET_USER = gql`
       email
       username
       phone_number
+      appointments {
+        id
+        Date
+        first_name
+        username
+        Date
+        Time
+        type_of_haircut
+      }
     }
   }
 `;
@@ -31,6 +40,42 @@ export const REGISTER_USER = gql`
       password: $password
     ) {
       first_name
+    }
+  }
+`;
+
+export const UPDATE_APPOINTMENTS = gql`
+  mutation updateUserAppointments(
+    $id: ID!
+    $first_name: String!
+    $username: String!
+    $type_of_haircut: String!
+    $Date: String!
+    $Time: String!
+  ) {
+    updateAppointments(
+      id: $id
+      first_name: $first_name
+      username: $username
+      type_of_haircut: $type_of_haircut
+      Date: $Date
+      Time: $Time
+    ) {
+      id
+      first_name
+      last_name
+      email
+      username
+      phone_number
+      appointments {
+        id
+        Date
+        first_name
+        username
+        Date
+        Time
+        type_of_haircut
+      }
     }
   }
 `;
