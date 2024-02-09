@@ -72,7 +72,6 @@ export const UPDATE_APPOINTMENTS = gql`
         Date
         first_name
         username
-        Date
         Time
         type_of_haircut
       }

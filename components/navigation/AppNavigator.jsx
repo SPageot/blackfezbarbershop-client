@@ -12,6 +12,7 @@ const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
   const { user } = useUser();
+  console.log(user);
 
   return (
     <NavigationContainer>

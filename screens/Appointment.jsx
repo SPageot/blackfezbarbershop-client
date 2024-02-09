@@ -112,8 +112,8 @@ const Appointment = () => {
                 Time: "10:00pm",
               },
             });
-            console.log("appointment Cofirmed: " + app_data);
-            verifyUser(app_data);
+
+            console.log(app_data);
           }
           setPage((prev) => prev + 1);
         }}
