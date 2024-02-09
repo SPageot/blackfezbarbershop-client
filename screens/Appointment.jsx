@@ -1,19 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Text, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-element-dropdown";
 import { useUser } from "../utils/GetUser";
 import { DatePickerModal } from "react-native-paper-dates";
 import { View } from "react-native";
+import { useMutation } from "@apollo/client";
+import { UPDATE_APPOINTMENTS } from "../api/mutations";
 
 const Appointment = () => {
   const { user, verifyUser } = useUser();
+  const [
+    updateUserAppointments,
+    { data: app_data, loading: app_loading, error: app_error },
+  ] = useMutation(UPDATE_APPOINTMENTS);
   const [isFocus, setIsFocus] = useState();
   const [confirmAppointment, setConfirmAppointment] = useState(false);
   const [page, setPage] = useState(0);
   const [value, setValue] = useState();
-  const [date, setDate] = React.useState(undefined);
-  const [open, setOpen] = React.useState(true);
-  console.log(user);
+  const [date, setDate] = useState(undefined);
+  const [open, setOpen] = useState(true);
+
+  console.log(app_data);
+
   const onDismissSingle = React.useCallback(() => {
     setOpen(false);
   }, [setOpen]);
@@ -66,6 +74,7 @@ const Appointment = () => {
       {page == 1 ? (
         <>
           <DatePickerModal
+            locale='en'
             mode='single'
             visible={open}
             onDismiss={onDismissSingle}
@@ -75,7 +84,7 @@ const Appointment = () => {
         </>
       ) : null}
 
-      {page == 2 ? (
+      {page == 2 && user ? (
         <View
           style={{
             height: "80%",
@@ -83,9 +92,9 @@ const Appointment = () => {
             alignItems: "center",
           }}
         >
-          <Text variant='titleLarge'>{user.id}</Text>
-          <Text variant='titleLarge'>{user.username}</Text>
-          <Text variant='titleLarge'>{user.firstName}</Text>
+          <Text variant='titleLarge'>{user?.setUser.id}</Text>
+          <Text variant='titleLarge'>{user?.setUser.username}</Text>
+          <Text variant='titleLarge'>{user?.setUser.first_name}</Text>
           <Text variant='titleLarge'>{value}</Text>
           <Text variant='titleLarge'>{date}</Text>
         </View>
@@ -93,21 +102,18 @@ const Appointment = () => {
       <Button
         onPress={() => {
           if (page > 1) {
-            console.log({
-              ...user,
-              appoinments: [
-                ...user.appoinments,
-                {
-                  id: user.id,
-                  username: user.username,
-                  firstName: user.firstName,
-                  typeOfHaircut: value,
-                  date: date,
-                },
-              ],
+            updateUserAppointments({
+              variables: {
+                id: user?.setUser.id,
+                username: user?.setUser.username,
+                first_name: user?.setUser.first_name,
+                type_of_haircut: value,
+                Date: date,
+                Time: "10:00pm",
+              },
             });
-
-            console.log("appointment Cofirmed");
+            console.log("appointment Cofirmed: " + app_data);
+            verifyUser(app_data);
           }
           setPage((prev) => prev + 1);
         }}
