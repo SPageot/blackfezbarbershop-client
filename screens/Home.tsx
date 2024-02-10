@@ -1,4 +1,5 @@
-import { View, Text } from "react-native";
+import { View, ScrollView } from "react-native";
+import { Text } from "react-native-paper";
 import React, { Fragment, useEffect, useState } from "react";
 import Container from "../components/home/Container";
 import { useUser } from "../utils/GetUser";
@@ -9,12 +10,12 @@ const Home = () => {
 
   return (
     <View>
-      <Text>Upcoming Appointments</Text>
-      <View style={{ alignItems: "center" }}>
-        <Container>
-          {appointments?.length > 0
-            ? appointments.map((appointment) => {
-                return (
+      <Text variant='titleLarge'>Upcoming Appointments</Text>
+      <ScrollView style={{ height: "40%" }}>
+        {appointments?.length > 0
+          ? appointments.map((appointment) => {
+              return (
+                <Container>
                   <Fragment key={appointment.id}>
                     <Text>{appointment.id}</Text>
                     <Text>{appointment.first_name}</Text>
@@ -23,11 +24,11 @@ const Home = () => {
                     <Text>{appointment.Date}</Text>
                     <Text>{appointment.Time}</Text>
                   </Fragment>
-                );
-              })
-            : null}
-        </Container>
-      </View>
+                </Container>
+              );
+            })
+          : null}
+      </ScrollView>
     </View>
   );
 };

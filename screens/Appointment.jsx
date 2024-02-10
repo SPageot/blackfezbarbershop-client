@@ -6,9 +6,11 @@ import { DatePickerModal } from "react-native-paper-dates";
 import { View } from "react-native";
 import { useMutation } from "@apollo/client";
 import { UPDATE_APPOINTMENTS } from "../api/mutations";
+import { useNavigation } from "@react-navigation/native";
 
 const Appointment = () => {
   const { user, verifyUser } = useUser();
+  const navigation = useNavigation();
   const [
     updateUserAppointments,
     { data: app_data, loading: app_loading, error: app_error },
@@ -19,8 +21,6 @@ const Appointment = () => {
   const [value, setValue] = useState();
   const [date, setDate] = useState(undefined);
   const [open, setOpen] = useState(true);
-
-  console.log(app_data);
 
   const onDismissSingle = React.useCallback(() => {
     setOpen(false);
@@ -43,6 +43,7 @@ const Appointment = () => {
     { label: "Low Taper", value: "Low Taper" },
     { label: "Others", value: "Others" },
   ];
+
   return (
     <Card
       style={{
@@ -104,7 +105,7 @@ const Appointment = () => {
           if (page > 1) {
             updateUserAppointments({
               variables: {
-                id: user?.setUser.id,
+                client_id: user?.setUser.id,
                 username: user?.setUser.username,
                 first_name: user?.setUser.first_name,
                 type_of_haircut: value,
@@ -112,8 +113,8 @@ const Appointment = () => {
                 Time: "10:00pm",
               },
             });
-
-            console.log(app_data);
+            setPage(0);
+            navigation.navigate("Home");
           }
           setPage((prev) => prev + 1);
         }}

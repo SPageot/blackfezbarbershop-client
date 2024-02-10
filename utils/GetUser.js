@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 const UserContext = createContext(null);
 
@@ -8,9 +8,14 @@ export function useUser() {
 
 export default function UserProvider({ children }) {
   const [user, setUser] = useState();
-
-  const verifyUser = (user) => {
-    setUser(user);
+  const verifyUser = (userInfo, modifyType) => {
+    if (modifyType == "UPDATE_APPOINTMENTS") {
+      setUser((prev) => {
+        prev.appointments = userInfo.appointments;
+        return prev;
+      });
+    }
+    setUser(userInfo);
   };
 
   return (
