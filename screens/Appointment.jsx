@@ -9,7 +9,7 @@ import { UPDATE_APPOINTMENTS } from "../api/mutations";
 import { useNavigation } from "@react-navigation/native";
 
 const Appointment = () => {
-  const { user, verifyUser } = useUser();
+  const { user, getAppointments } = useUser();
   const navigation = useNavigation();
   const [
     updateUserAppointments,
@@ -21,6 +21,12 @@ const Appointment = () => {
   const [value, setValue] = useState();
   const [date, setDate] = useState(undefined);
   const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    if (!app_loading && app_data) {
+      getAppointments(app_data);
+    }
+  }, [app_data]);
 
   const onDismissSingle = React.useCallback(() => {
     setOpen(false);
@@ -115,8 +121,11 @@ const Appointment = () => {
             });
             setPage(0);
             navigation.navigate("Home");
+            setDate(undefined);
+            setValue(null);
+          } else {
+            setPage((prev) => prev + 1);
           }
-          setPage((prev) => prev + 1);
         }}
       >
         {page < 2 ? "Next" : "Confirm"}

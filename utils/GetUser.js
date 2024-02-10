@@ -8,18 +8,19 @@ export function useUser() {
 
 export default function UserProvider({ children }) {
   const [user, setUser] = useState();
-  const verifyUser = (userInfo, modifyType) => {
-    if (modifyType == "UPDATE_APPOINTMENTS") {
-      setUser((prev) => {
-        prev.appointments = userInfo.appointments;
-        return prev;
-      });
-    }
+  const [userAppointments, setUserAppoinments] = useState([]);
+  const verifyUser = (userInfo) => {
     setUser(userInfo);
   };
 
+  const getAppointments = (userApp) => {
+    setUserAppoinments(userApp);
+  };
+
   return (
-    <UserContext.Provider value={{ user, verifyUser }}>
+    <UserContext.Provider
+      value={{ user, verifyUser, getAppointments, userAppointments }}
+    >
       {children}
     </UserContext.Provider>
   );

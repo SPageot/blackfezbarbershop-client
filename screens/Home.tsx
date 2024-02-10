@@ -1,22 +1,21 @@
 import { View, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import Container from "../components/home/Container";
 import { useUser } from "../utils/GetUser";
 
 const Home = () => {
-  const { user } = useUser();
-  const [appointments, setAppointments] = useState(user.setUser.appointments);
+  const { userAppointments } = useUser();
 
   return (
     <View>
       <Text variant='titleLarge'>Upcoming Appointments</Text>
       <ScrollView style={{ height: "40%" }}>
-        {appointments?.length > 0
-          ? appointments.map((appointment) => {
+        {userAppointments?.updateAppointments?.length > 0
+          ? userAppointments?.updateAppointments.map((appointment) => {
               return (
-                <Container>
-                  <Fragment key={appointment.id}>
+                <Container key={appointment.id}>
+                  <Fragment>
                     <Text>{appointment.id}</Text>
                     <Text>{appointment.first_name}</Text>
                     <Text>{appointment.username}</Text>
