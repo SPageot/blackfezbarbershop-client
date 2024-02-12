@@ -42,7 +42,6 @@ export const UPDATE_APPOINTMENTS = gql`
     $username: String!
     $type_of_haircut: String!
     $Date: String!
-    $Time: String!
   ) {
     updateAppointments(
       client_id: $client_id
@@ -50,14 +49,12 @@ export const UPDATE_APPOINTMENTS = gql`
       username: $username
       type_of_haircut: $type_of_haircut
       Date: $Date
-      Time: $Time
     ) {
       id
       client_id
       Date
       first_name
       username
-      Time
       type_of_haircut
     }
   }

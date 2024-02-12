@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Card, Text, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-element-dropdown";
 import { useUser } from "../utils/GetUser";
-import { DatePickerModal } from "react-native-paper-dates";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { View } from "react-native";
 import { useMutation } from "@apollo/client";
 import { UPDATE_APPOINTMENTS } from "../api/mutations";
@@ -16,26 +16,20 @@ const Appointment = () => {
     { data: app_data, loading: app_loading, error: app_error },
   ] = useMutation(UPDATE_APPOINTMENTS);
   const [isFocus, setIsFocus] = useState();
-  const [confirmAppointment, setConfirmAppointment] = useState(false);
   const [page, setPage] = useState(0);
   const [value, setValue] = useState();
-  const [date, setDate] = useState(undefined);
-  const [open, setOpen] = useState(true);
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!app_loading && app_data) {
+    if (app_data) {
       getAppointments(app_data);
     }
   }, [app_data]);
 
-  const onDismissSingle = React.useCallback(() => {
-    setOpen(false);
-  }, [setOpen]);
-
-  const onConfirmSingle = React.useCallback(
-    (params) => {
-      setOpen(false);
-      setDate(String(params.date)?.slice(0, 16));
+  const onDateChange = useCallback(
+    (date) => {
+      setDate(new Date(date.nativeEvent.timestamp));
     },
     [setOpen, setDate]
   );
@@ -49,17 +43,21 @@ const Appointment = () => {
     { label: "Low Taper", value: "Low Taper" },
     { label: "Others", value: "Others" },
   ];
-
+  console.log(date);
   return (
-    <Card
+    <View
       style={{
-        flex: 1,
+        height: "100%",
+        width: "100%",
+        justifyContent: "space-evenly",
+        alignItems: "center",
       }}
     >
       {page == 0 ? (
         <>
           <Text variant='titleLarge'>Type of Haicut</Text>
           <Dropdown
+            style={{ width: "100%" }}
             data={data}
             search
             maxHeight={300}
@@ -75,23 +73,15 @@ const Appointment = () => {
               setIsFocus(false);
             }}
           />
-        </>
-      ) : null}
-
-      {page == 1 ? (
-        <>
-          <DatePickerModal
-            locale='en'
-            mode='single'
-            visible={open}
-            onDismiss={onDismissSingle}
-            date={date}
-            onConfirm={onConfirmSingle}
+          <DateTimePicker
+            mode='datetime'
+            value={date}
+            onChange={onDateChange}
           />
         </>
       ) : null}
 
-      {page == 2 && user ? (
+      {page == 1 && user ? (
         <View
           style={{
             height: "80%",
@@ -103,12 +93,23 @@ const Appointment = () => {
           <Text variant='titleLarge'>{user?.setUser.username}</Text>
           <Text variant='titleLarge'>{user?.setUser.first_name}</Text>
           <Text variant='titleLarge'>{value}</Text>
-          <Text variant='titleLarge'>{date}</Text>
+          <Text variant='titleLarge'>{String(date)}</Text>
         </View>
       ) : null}
       <Button
+        style={{
+          backgroundColor: "lightblue",
+          position: "absolute",
+          height: "10%",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          borderRadius: "none",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
         onPress={() => {
-          if (page > 1) {
+          if (page > 0) {
             updateUserAppointments({
               variables: {
                 client_id: user?.setUser.id,
@@ -116,21 +117,20 @@ const Appointment = () => {
                 first_name: user?.setUser.first_name,
                 type_of_haircut: value,
                 Date: date,
-                Time: "10:00pm",
               },
             });
             setPage(0);
             navigation.navigate("Home");
-            setDate(undefined);
+            setDate(new Date());
             setValue(null);
           } else {
             setPage((prev) => prev + 1);
           }
         }}
       >
-        {page < 2 ? "Next" : "Confirm"}
+        <Text variant='titleLarge'>{page < 1 ? "Next" : "Confirm"}</Text>
       </Button>
-    </Card>
+    </View>
   );
 };
 
