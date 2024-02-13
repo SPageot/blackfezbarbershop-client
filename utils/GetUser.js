@@ -8,19 +8,13 @@ export function useUser() {
 
 export default function UserProvider({ children }) {
   const [user, setUser] = useState();
-  const [userAppointments, setUserAppoinments] = useState([]);
-  const verifyUser = (userInfo) => {
-    setUser(userInfo);
-  };
 
-  const getAppointments = (userApp) => {
-    setUserAppoinments(userApp);
+  const verifyUser = (userInfo) => {
+    setUser(userInfo.setUser);
   };
 
   return (
-    <UserContext.Provider
-      value={{ user, verifyUser, getAppointments, userAppointments }}
-    >
+    <UserContext.Provider value={{ user, verifyUser }}>
       {children}
     </UserContext.Provider>
   );

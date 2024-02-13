@@ -37,7 +37,7 @@ export const REGISTER_USER = gql`
 
 export const UPDATE_APPOINTMENTS = gql`
   mutation updateUserAppointments(
-    $client_id: ID!
+    $client_id: String!
     $first_name: String!
     $username: String!
     $type_of_haircut: String!

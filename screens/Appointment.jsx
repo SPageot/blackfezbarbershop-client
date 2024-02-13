@@ -9,8 +9,9 @@ import { UPDATE_APPOINTMENTS } from "../api/mutations";
 import { useNavigation } from "@react-navigation/native";
 
 const Appointment = () => {
-  const { user, getAppointments } = useUser();
+  const { user } = useUser();
   const navigation = useNavigation();
+
   const [
     updateUserAppointments,
     { data: app_data, loading: app_loading, error: app_error },
@@ -20,12 +21,6 @@ const Appointment = () => {
   const [value, setValue] = useState();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (app_data) {
-      getAppointments(app_data);
-    }
-  }, [app_data]);
 
   const onDateChange = useCallback(
     (date) => {
@@ -43,7 +38,7 @@ const Appointment = () => {
     { label: "Low Taper", value: "Low Taper" },
     { label: "Others", value: "Others" },
   ];
-  console.log(date);
+
   return (
     <View
       style={{
@@ -89,9 +84,9 @@ const Appointment = () => {
             alignItems: "center",
           }}
         >
-          <Text variant='titleLarge'>{user?.setUser.id}</Text>
-          <Text variant='titleLarge'>{user?.setUser.username}</Text>
-          <Text variant='titleLarge'>{user?.setUser.first_name}</Text>
+          <Text variant='titleLarge'>{user?.id}</Text>
+          <Text variant='titleLarge'>{user?.username}</Text>
+          <Text variant='titleLarge'>{user?.first_name}</Text>
           <Text variant='titleLarge'>{value}</Text>
           <Text variant='titleLarge'>{String(date)}</Text>
         </View>
@@ -112,11 +107,11 @@ const Appointment = () => {
           if (page > 0) {
             updateUserAppointments({
               variables: {
-                client_id: user?.setUser.id,
-                username: user?.setUser.username,
-                first_name: user?.setUser.first_name,
+                client_id: user?.id,
+                username: user?.username,
+                first_name: user?.first_name,
                 type_of_haircut: value,
-                Date: date,
+                Date: String(date),
               },
             });
             setPage(0);
