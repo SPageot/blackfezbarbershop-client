@@ -8,6 +8,7 @@ import { useUser } from "../utils/GetUser";
 
 const Home = () => {
   const { user } = useUser();
+
   const {
     data: appointments,
     error,

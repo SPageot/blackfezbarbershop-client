@@ -1,21 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Button, Card, Text, TextInput } from "react-native-paper";
+import React, { useCallback, useState } from "react";
+import { Button, Text } from "react-native-paper";
 import { Dropdown } from "react-native-element-dropdown";
 import { useUser } from "../utils/GetUser";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { View } from "react-native";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { UPDATE_APPOINTMENTS } from "../api/mutations";
 import { useNavigation } from "@react-navigation/native";
+import { GET_APPOINTMENTS } from "../api/queries";
 
 const Appointment = () => {
   const { user } = useUser();
   const navigation = useNavigation();
-
-  const [
-    updateUserAppointments,
-    { data: app_data, loading: app_loading, error: app_error },
-  ] = useMutation(UPDATE_APPOINTMENTS);
+  const [updateUserAppointments] = useMutation(UPDATE_APPOINTMENTS, {
+    refetchQueries: [GET_APPOINTMENTS],
+  });
   const [isFocus, setIsFocus] = useState();
   const [page, setPage] = useState(0);
   const [value, setValue] = useState();
