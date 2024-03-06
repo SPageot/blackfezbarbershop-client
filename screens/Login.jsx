@@ -80,7 +80,7 @@ const Login = () => {
 
   useEffect(() => {
     if (data) {
-      if (verifyUser(data)) {
+      if (verifyUser(data.setUser)) {
         navigation.navigate("Appointment");
       }
     }

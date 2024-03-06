@@ -17,10 +17,11 @@ const Home = () => {
     variables: { client_id: user.id },
   });
   const userAppointments = appointments?.getAppointments;
+
   return (
     <View>
       <Text variant='titleLarge'>Upcoming Appointments</Text>
-      <ScrollView style={{ height: "40%" }}>
+      <ScrollView style={{ height: "100%" }}>
         {userAppointments?.length > 0
           ? userAppointments?.map((appointment) => {
               return (
@@ -29,6 +30,8 @@ const Home = () => {
                     <Text>{appointment.id}</Text>
                     <Text>{appointment.first_name}</Text>
                     <Text>{appointment.username}</Text>
+                    <Text>{appointment.email}</Text>
+                    <Text>{appointment.phone_number}</Text>
                     <Text>{appointment.type_of_haircut}</Text>
                     <Text>{appointment.Date}</Text>
                   </Fragment>

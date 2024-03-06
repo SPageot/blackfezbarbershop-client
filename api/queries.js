@@ -1,12 +1,42 @@
 import { gql } from "@apollo/client";
 
 export const GET_USERS = gql`
-  query Users {
+  query Query {
     getUsers {
       id
       first_name
       last_name
       phone_number
+      email
+      username
+    }
+  }
+`;
+
+export const GET_USER = gql`
+  query GetUser($getUserId: String!) {
+    getUser(_id: $getUserId) {
+      _id
+      first_name
+      last_name
+      phone_number
+      email
+      username
+    }
+  }
+`;
+
+export const GET_ALL_APPOINTMENTS = gql`
+  query GetAllAppointments {
+    getAllAppointments {
+      id
+      client_id
+      first_name
+      username
+      phone_number
+      email
+      type_of_haircut
+      Date
     }
   }
 `;
@@ -17,6 +47,8 @@ export const GET_APPOINTMENTS = gql`
       id
       first_name
       username
+      phone_number
+      email
       type_of_haircut
       Date
     }

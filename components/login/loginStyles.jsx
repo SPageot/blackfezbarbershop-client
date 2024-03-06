@@ -4,6 +4,7 @@ const cardStyles = StyleSheet.create({
   cardContainer: {
     width: "90%",
     height: "70%",
+    backgroundColor: "black",
   },
 
   signUpContainer: {

@@ -49,7 +49,7 @@ const Appointment = () => {
     >
       {page == 0 ? (
         <>
-          <Text variant='titleLarge'>Type of Haicut</Text>
+          <Text variant='titleLarge'>Type of Haircut</Text>
           <Dropdown
             style={{ width: "100%" }}
             data={data}
@@ -86,6 +86,8 @@ const Appointment = () => {
           <Text variant='titleLarge'>{user?.id}</Text>
           <Text variant='titleLarge'>{user?.username}</Text>
           <Text variant='titleLarge'>{user?.first_name}</Text>
+          <Text variant='titleLarge'>{user?.email}</Text>
+          <Text variant='titleLarge'>{user?.phone_number}</Text>
           <Text variant='titleLarge'>{value}</Text>
           <Text variant='titleLarge'>{String(date)}</Text>
         </View>
@@ -107,6 +109,8 @@ const Appointment = () => {
             updateUserAppointments({
               variables: {
                 client_id: user?.id,
+                email: user?.email,
+                phone_number: user?.phone_number,
                 username: user?.username,
                 first_name: user?.first_name,
                 type_of_haircut: value,

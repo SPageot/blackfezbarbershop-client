@@ -7,10 +7,10 @@ export function useUser() {
 }
 
 export default function UserProvider({ children }) {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
 
   const verifyUser = (userInfo) => {
-    setUser(userInfo.setUser);
+    setUser({ ...userInfo });
   };
 
   return (
