@@ -10,7 +10,7 @@ import { useUser } from "../utils/GetUser";
 import { useNavigation } from "@react-navigation/native";
 import { Banner, Text } from "react-native-paper";
 import { signUpStatus } from "../components/login/loginText";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { REGISTER_USER, SET_USER } from "../api/mutations";
 
 const loginContainer = StyleSheet.create({
@@ -56,7 +56,6 @@ const Login = () => {
         password: userDetails.password,
       },
     });
-
     setUserDetails({
       first_name: "",
       last_name: "",
@@ -120,12 +119,9 @@ const Login = () => {
       />
       <Banner
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
           width: "100%",
           backgroundColor: passwordError ? "red" : "green",
-          zIndex: 10000,
+          zIndex: 1000,
         }}
         visible={visible || passwordError}
         actions={[
@@ -144,6 +140,7 @@ const Login = () => {
       </Banner>
       <Container register={register}>
         <UserInput
+          error={error}
           onChangeFirstName={(value) =>
             setUserDetails({ ...userDetails, first_name: value })
           }

@@ -22,7 +22,7 @@ const ListOfUsers = () => {
       >
         {data && !loading
           ? data.getUsers.map((client) => {
-              if (client.id != user.id) {
+              if (client._id != user._id) {
                 return (
                   <Card
                     contentStyle={{
@@ -33,7 +33,7 @@ const ListOfUsers = () => {
                       height: "100%",
                     }}
                     style={{ width: "90%", height: "15%", margin: 10 }}
-                    key={client.id}
+                    key={client._id}
                   >
                     <View>
                       <UserDetails

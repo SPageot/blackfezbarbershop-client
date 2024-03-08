@@ -14,7 +14,7 @@ const Home = () => {
     error,
     loading,
   } = useQuery(GET_APPOINTMENTS, {
-    variables: { client_id: user.id },
+    variables: { client_id: user._id },
   });
   const userAppointments = appointments?.getAppointments;
 

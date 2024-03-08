@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React from "react";
 import { Text, TextInput } from "react-native-paper";
 import { cardStyles } from "./loginStyles";
@@ -19,6 +20,7 @@ const UserInput = ({
   onChangePhoneNumber,
   phoneNumber,
   pageNumber,
+  error,
 }) => {
   return register ? (
     <>
@@ -111,6 +113,11 @@ const UserInput = ({
         onChangeText={onChangeUserName}
         style={cardStyles.textInput}
       />
+      <Text style={{ color: "#ff0000" }} variant='titleSmall'>
+        {error && _.isEmpty(username) && _.isEmpty(password)
+          ? error.message
+          : null}
+      </Text>
       <Text variant='headlineMedium'>{loginText.password}</Text>
       <TextInput
         value={password}

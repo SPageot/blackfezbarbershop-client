@@ -83,7 +83,7 @@ const Appointment = () => {
             alignItems: "center",
           }}
         >
-          <Text variant='titleLarge'>{user?.id}</Text>
+          <Text variant='titleLarge'>{user?._id}</Text>
           <Text variant='titleLarge'>{user?.username}</Text>
           <Text variant='titleLarge'>{user?.first_name}</Text>
           <Text variant='titleLarge'>{user?.email}</Text>
@@ -108,7 +108,7 @@ const Appointment = () => {
           if (page > 0) {
             updateUserAppointments({
               variables: {
-                client_id: user?.id,
+                client_id: user?._id,
                 email: user?.email,
                 phone_number: user?.phone_number,
                 username: user?.username,

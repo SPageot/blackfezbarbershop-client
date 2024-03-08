@@ -122,8 +122,8 @@ const Profile = () => {
       />
       <Pressable
         onPress={() => {
-          deleteUser({ variables: { deleteUserId: String(user.id) } });
-          verifyUser("");
+          deleteUser({ variables: { deleteUserId: String(user._id) } });
+          verifyUser({});
         }}
       >
         <Text>Delete Account</Text>
